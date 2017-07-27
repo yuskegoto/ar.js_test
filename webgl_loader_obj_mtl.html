@@ -90,15 +90,15 @@
 				var mtlLoader = new THREE.MTLLoader();
 //				mtlLoader.setPath( 'data/male02/' );
 //				mtlLoader.load( 'male02_dds.mtl', function( materials ) {
-				mtlLoader.setPath( 'data/old/' );
-				mtlLoader.load( 'protonSaga.mtl', function( materials ) {
+				mtlLoader.setPath( 'data/' );
+				mtlLoader.load( 'protonSagaRhino.mtl', function( materials ) {
 
 					materials.preload();
 
 					var objLoader = new THREE.OBJLoader();
 					objLoader.setMaterials( materials );
-					objLoader.setPath( 'data/old/' );
-					objLoader.load( 'protonSaga.obj', function ( object ) {
+					objLoader.setPath( 'data/' );
+					objLoader.load( 'protonSagaRhino.obj', function ( object ) {
 
 						object.position.y = - 95;
 						scene.add( object );
