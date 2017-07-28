@@ -54,26 +54,28 @@
 
 			var loader = new THREE.ColladaLoader();
 			loader.options.convertUpAxis = true;
-			loader.load( 'data/protonSaga.dae', function ( collada ) {
+			loader.load( 'data/apdLogo.dae', function ( collada ) {
+//			loader.load( 'data/protonSaga.dae', function ( collada ) {
+//			loader.load( 'data/monster/monster.dae', function ( collada ) {
 
 				dae = collada.scene;
 
-//				dae.traverse( function ( child ) {
-//
-//					if ( child instanceof THREE.SkinnedMesh ) {
-//
-//						var animation = new THREE.Animation( child, child.geometry.animation );
-//						animation.play();
-//
-//					}
+				dae.traverse( function ( child ) {
+
+					if ( child instanceof THREE.SkinnedMesh ) {
+
+						var animation = new THREE.Animation( child, child.geometry.animation );
+						animation.play();
+
+					}
 
 				} );
 
-				dae.scale.x = dae.scale.y = dae.scale.z = 0.02;
+//				dae.scale.x = dae.scale.y = dae.scale.z = 0.2;
 				dae.updateMatrix();
 
 				init();
-//				animate();
+				animate();
 
 			} );
 
