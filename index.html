@@ -11,9 +11,11 @@
         <script>THREEx.ArToolkitContext.baseURL = './'</script>
     
         <!--collada loader-->
+<!--
 		<script src="js/loaders/collada/Animation.js"></script>
 		<script src="js/loaders/collada/AnimationHandler.js"></script>
 		<script src="js/loaders/collada/KeyFrameAnimation.js"></script>
+-->
 		<script src="js/loaders/ColladaLoader.js"></script>
         
     </head>
@@ -121,7 +123,8 @@
             scene.add(markerRoot)
             var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
                 type : 'pattern',
-                patternUrl : THREEx.ArToolkitContext.baseURL + './data/data/patt.hiro'
+//                patternUrl : THREEx.ArToolkitContext.baseURL + './data/data/patt.hiro'
+                patternUrl : 'data/data/pattern-marker.patt'
             })
 
             // build a smoothedControls
@@ -189,7 +192,7 @@
 
             onRenderFcts.push(function(){
                 //you can rotate the object, if you want...
-        		dae.rotation.y += 0.005
+        		dae.rotation.y += 0.003
             })
 
 	//////////////////////////////////////////////////////////////////////////////////
