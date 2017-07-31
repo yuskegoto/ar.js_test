@@ -35,6 +35,12 @@
 		<script src="js/controls/OrbitControls.js"></script>
 
 		<script src="js/loaders/FBXLoader.js"></script>
+        
+<!--
+		<script src="js/loaders/collada/Animation.js"></script>
+		<script src="js/loaders/collada/AnimationHandler.js"></script>
+		<script src="js/loaders/collada/KeyFrameAnimation.js"></script>
+-->
 
 		<script src="js/Detector.js"></script>
 		<script src="js/stats.min.js"></script>
@@ -93,14 +99,14 @@
 				};
 
 				var loader = new THREE.FBXLoader( manager );
-				loader.load( 'data/fbx/xsi_man_skinning.fbx', function( object ) {
-
+//                var loader = new THREE.JSONLoader(), animatedMesh;
+                
+//				loader.load( 'data/fbx/xsi_man_skinning.fbx', function( object ) {
+				loader.load( 'data/apdLogoMoveTest.fbx', function( object ) {
+//                loader.load('data/apdLogo.js', function ( geometry, materials ) {
 					object.traverse( function( child ) {
 
 						if ( child instanceof THREE.Mesh ) {
-
-							// pass
-
 						}
 
 						if ( child instanceof THREE.SkinnedMesh ) {
@@ -118,8 +124,39 @@
 						}
 
 					} );
+                    
+//                    // Tell the material that it has bone weights
+//                    var originalMaterial = materials[ 0 ];
+//                    originalMaterial.skinning = true;
+//
+//                    // Create a new SkinnedMesh (important! Not a animatedMesh!)
+//                    animatedMesh = new THREE.SkinnedMesh( geometry, originalMaterial );
+//
+//                    // Optional scale step, your results may vary
+//                    animatedMesh.scale.set( 0.1, 0.1, 0.1 );
+//
+//                    // Instantiate the animation
+//                    var animation = new THREE.Animation(
+//                        animatedMesh,
+//                        geometry.animation
+//                    );
+//
+//                    // Start playing the animation
+//                    animation.play();
+//
+//                });
+//
+//                // ... Your scene code here ...
+//
+//                // Add animatedMesh to scene
+//
+//                scene.add( animatedMesh );
+                    
+                    
+                object.scale.x = object.scale.y = object.scale.z = 100;
 
-					scene.add( object );
+
+                scene.add( object );
 
 
 				}, onProgress, onError );

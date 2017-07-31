@@ -11,11 +11,9 @@
         <script>THREEx.ArToolkitContext.baseURL = './'</script>
     
         <!--collada loader-->
-<!--
 		<script src="js/loaders/collada/Animation.js"></script>
 		<script src="js/loaders/collada/AnimationHandler.js"></script>
 		<script src="js/loaders/collada/KeyFrameAnimation.js"></script>
--->
 		<script src="js/loaders/ColladaLoader.js"></script>
         
     </head>
@@ -180,10 +178,18 @@
             var dae;
             var loader = new THREE.ColladaLoader();
             loader.options.convertUpAxis = true;
-            loader.load( 'data/protonSaga.dae', function ( collada ) {
+//            loader.load( 'data/protonSaga.dae', function ( collada ) {
+            loader.load( 'data/apdLogo.dae', function ( collada ) {
                 dae = collada.scene;
 
-                dae.scale.x = dae.scale.y = dae.scale.z = 0.05;
+                dae.traverse( function ( child ) {
+					if ( child instanceof THREE.SkinnedMesh ) {
+						var animation = new THREE.Animation( child, child.geometry.animation );
+						animation.play();
+					}
+				} );
+                
+                dae.scale.x = dae.scale.y = dae.scale.z = 0.5;
                 dae.updateMatrix();
 
 //				scene.add( dae );
