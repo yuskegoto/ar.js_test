@@ -4,8 +4,8 @@
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         
         <script src="js/three.min.js"></script><style>@media print {#ghostery-purple-box {display:none !important}}</style>
-
-        <script src="js/stats.min.js"></script>
+<!--            status indicator-->
+<!--        <script src="js/stats.min.js"></script>-->
         <!-- ar.js -->
         <script src="js/ar.js"></script>
         <script>THREEx.ArToolkitContext.baseURL = './'</script>
@@ -270,8 +270,8 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
-        stats = new Stats();
-        document.body.appendChild( stats.dom );
+//        stats = new Stats();
+//        document.body.appendChild( stats.dom );
 
             // render the scene
 //        onRenderFcts.push(function(){
@@ -301,8 +301,7 @@
                 arToolkitContext.update( arToolkitSource.domElement );
                 smoothedControls.update(markerRoot);
 
-                //update page
-                stats.update();
+//                stats.update();
                 
                 //update animation
                 requestAnimationFrame(animate);
