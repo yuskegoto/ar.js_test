@@ -24,9 +24,6 @@
 	//////////////////////////////////////////////////////////////////////////////////
             var action, camera, clock, mixer, renderer, scene, stats;
             var loader, textureLoader;
-            var screenMode, modelName;
-            
-//            screen.orientation.lock('portrait');
             
             // init renderer
             renderer = new THREE.WebGLRenderer({
@@ -34,13 +31,15 @@
                 alpha: true
             });
             
-            renderer.setClearColor(new THREE.Color('lightgrey'), 0);
+            renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+//             renderer.setPixelRatio( 1/2 );
+//            renderer.setPixelRatio(1);
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize( window.innerWidth, window.innerHeight );
 
-            renderer.domElement.style.position = 'absolute';
-            renderer.domElement.style.top = '0px';
-            renderer.domElement.style.left = '0px';
+            renderer.domElement.style.position = 'absolute'
+            renderer.domElement.style.top = '0px'
+            renderer.domElement.style.left = '0px'
             document.body.appendChild( renderer.domElement );
 
             // init scene
@@ -51,15 +50,15 @@
             loader = new THREE.JSONLoader();
             
             clock = new THREE.Clock();
-            
-            screenMode = screen.orientation.type;
 	
-//////////////////////////////////////////////////////////////////////////////////
-//		Initialize a basic camera
-//////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Initialize a basic camera
+	//////////////////////////////////////////////////////////////////////////////////
 
             // Create a camera
-            camera = new THREE.Camera();
+//            camera = new THREE.Camera();
+				camera = new THREE.PerspectiveCamera( 20, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera.position.z = 10;
             scene.add(camera);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -72,32 +71,25 @@
             })
 
             arToolkitSource.init(function onReady(){
-                fitArScreen();
-                loadModel();
+                onResize()
             })
 
             // handle resize
             window.addEventListener('resize', function(){
-                onResize();
+                onResize()
             })
             
             function onResize(){
-                console.log("Window resized");                
-                fitArScreen();
-                changeModel();
-            }
-            
-            function fitArScreen(){
                 arToolkitSource.onResize();
                 arToolkitSource.copySizeTo(renderer.domElement);
                 if( arToolkitContext.arController !== null ){
                     arToolkitSource.copySizeTo(arToolkitContext.arController.canvas);
-                }
+                }	
             }
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////
-            // create atToolkitContext
+//             create atToolkitContext
             var arToolkitContext = new THREEx.ArToolkitContext({
                 cameraParametersUrl: THREEx.ArToolkitContext.baseURL + './data/ar/camera_para.dat',
                 detectionMode: 'mono',
@@ -135,42 +127,43 @@
 //                smoothedControls.update(markerRoot)
 //            })
 	////////////////////////////////////////////////////////////////////////////////
-	//		add an object in the scene
+	//		Lighting set up
 	////////////////////////////////////////////////////////////////////////////////
 
             var arWorldRoot = smoothedRoot
-
+//
             var ambient = new THREE.AmbientLight(0x888890);
 //            scene.add( ambient );
             arWorldRoot.add( ambient );
-
+//
             var directionalLight = new THREE.DirectionalLight(0x999999);
             directionalLight.position.set( -100, 100, -100 );
 //            directionalLight.position.set( 0, 0, 0 ).normalize();
             directionalLight.target.position.set( 0, 0, 0 );
 //            scene.add( directionalLight );
             arWorldRoot.add( directionalLight );
-
+//
             var directionalLight2 = new THREE.DirectionalLight(0x77777777);
             directionalLight2.position.set( -100, -100, -100 );
-//            directionalLight.position.set( 0, 0, 0 ).normalize();
+////            directionalLight.position.set( 0, 0, 0 ).normalize();
             directionalLight2.target.position.set( 0, 0, 0 );
-//            scene.add( directionalLight );
+//            scene.add( directionalLight2 );
             arWorldRoot.add( directionalLight2 );
 
 	////////////////////////////////////////////////////////////////////////////////
 	//		add a testbox
 	////////////////////////////////////////////////////////////////////////////////
-//            var geometry	= new THREE.CubeGeometry(1,1,1);
-//            var material	= new THREE.MeshNormalMaterial({
-//                transparent : true,
-//                opacity: 0.5,
-//                side: THREE.DoubleSide
-//            }); 
-//            var mesh	= new THREE.Mesh( geometry, material );
-//            mesh.position.y	= geometry.parameters.height/2
-//            	arWorldRoot.add( mesh );
+            var geometry	= new THREE.CubeGeometry(1,1,1);
+            var material	= new THREE.MeshNormalMaterial({
+                transparent : true,
+                opacity: 0.5,
+                side: THREE.DoubleSide
+            }); 
+            var mesh	= new THREE.Mesh( geometry, material );
+            mesh.position.y	= geometry.parameters.height/2
+            arWorldRoot.add( mesh );
 //            mesh.scale.set(0.1,0.1,0.1);
+//            mesh.position.y = -0.1;
 //            scene.add( mesh );
 	
     ////////////////////////////////////////////////////////////////////////////////
@@ -215,57 +208,34 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	//		JSON loader
 	//////////////////////////////////////////////////////////////////////////////////
-            
-           
-            function loadModel(){
-                screenMode = screen.orientation.type;
-                if(screenMode.startsWith('landscape')){
-                    modelName = "apdLogo.json";
-                    console.log("Loaded normal model");
-                }
-                else{
-                    modelName = "apdLogo_sq.json";
-                    console.log("Loaded squashed model");
-                }
+//            loader.load('./data/apdLogo0731.json', function (geometry, materials) {
+            loader.load('./data/apdLogo0801.json', function (geometry, materials) {
+//            loader.load('./data/json/eva-animated.json', function (geometry, materials) {
+                materials.forEach(function (material) {
+                  material.skinning = true;
+                });
+                character = new THREE.SkinnedMesh(
+                  geometry,
+                  new THREE.MeshFaceMaterial(materials)
+                );
 
-                loader.load("./data/" + modelName, function (geometry, materials) {
+                mixer = new THREE.AnimationMixer(character);
+                action = mixer.clipAction(geometry.animations[0]);
+                action.setEffectiveWeight(1);
+                action.enabled = true;
+                character.scale.set( 0.5, 0.5, 0.5 );
+//                character.position.y = -0.1;
+                arWorldRoot.add(character);
+//                scene.add(character);
 
-                    materials.forEach(function (material) {
-                      material.skinning = true;
-                    });
-                    character = new THREE.SkinnedMesh(
-                      geometry,
-                      new THREE.MeshFaceMaterial(materials)
-                    );
+                
+                animate();
+//                isLoaded = true;
 
-                    mixer = new THREE.AnimationMixer(character);
-                    action = mixer.clipAction(geometry.animations[0]);
-                    action.setEffectiveWeight(1);
-                    action.enabled = true;
-                    character.scale.set( 0.5, 0.5, 0.5 );
-                    character.name = "apdLogo";
-                    arWorldRoot.add(character);
+                action.play();
 
-                    animate();
-
-                    action.play();
-
-                });                
-            }            
-            
-            function deleteModel(){
-                    action.stop();
-                    var selectObject = arWorldRoot.getObjectByName("apdLogo");
-                    arWorldRoot.remove(selectObject);
-                    console.log("object removed");                
-            }
-            
-            function changeModel () {
-                if(screenMode !== screen.orientation.type){
-                    deleteModel();
-                    loadModel();
-                }
-            }
+//                window.addEventListener('resize', onWindowResize, false);
+            });     
             
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
