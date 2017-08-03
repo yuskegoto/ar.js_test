@@ -39,6 +39,11 @@ Safari: Worked with some issues: See below:
 On Portrait Mode: 3D model is vertically stretched
 On Horizontal Mode: Vertical Axis (Y) is slanted to right. Model is not stretched.
 Above issue is also observed on Android + Chrome (Device: Oppo)
+HTC 10 Worked, only on portrait mode and recognized only once.
 
 Hot fix:
 For the model stretching issue I implemented a function to switch to models (normal propotion + vertically 50% compressed) according to the device orientation.
+
+Front / Back camera issue
+Only on HTC 10 the front camera was activated.
+https://github.com/jeromeetienne/AR.js/issues/86

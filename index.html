@@ -42,6 +42,10 @@
             renderer.domElement.style.top = '0px';
             renderer.domElement.style.left = '0px';
             document.body.appendChild( renderer.domElement );
+            
+            //setting for casting shadow
+            renderer.shadowMapEnabled=true;
+            renderer.shadowMapType=THREE.PCFSoftShadowMap;
 
             // init scene
             scene	= new THREE.Scene();
@@ -74,6 +78,7 @@
             arToolkitSource.init(function onReady(){
                 fitArScreen();
                 loadModel();
+//                getDevices();
             })
 
             // handle resize
@@ -140,18 +145,20 @@
 
             var arWorldRoot = smoothedRoot
 
-            var ambient = new THREE.AmbientLight(0x888890);
+            var ambient = new THREE.AmbientLight(0xDDDDFF, 0.6);
 //            scene.add( ambient );
             arWorldRoot.add( ambient );
 
-            var directionalLight = new THREE.DirectionalLight(0x999999);
-            directionalLight.position.set( -100, 100, -100 );
+            var directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.5);
+            directionalLight.position.set( -100, 200, -100 );
 //            directionalLight.position.set( 0, 0, 0 ).normalize();
             directionalLight.target.position.set( 0, 0, 0 );
-//            scene.add( directionalLight );
+            directionalLight.castShadow = true;
+            directionalLight.shadowDarkness = 0.5;
+//            scene.add(2 directionalLight );
             arWorldRoot.add( directionalLight );
 
-            var directionalLight2 = new THREE.DirectionalLight(0x77777777);
+            var directionalLight2 = new THREE.DirectionalLight(0xFFFFFF, 0.4);
             directionalLight2.position.set( -100, -100, -100 );
 //            directionalLight.position.set( 0, 0, 0 ).normalize();
             directionalLight2.target.position.set( 0, 0, 0 );
@@ -213,10 +220,24 @@
 //        		dae.rotation.y += 0.003
 //            })
 	//////////////////////////////////////////////////////////////////////////////////
+	//		Floor
+	//////////////////////////////////////////////////////////////////////////////////
+            
+            var ground;
+            var geometry = new THREE.PlaneBufferGeometry(5, 5);
+            geometry.rotateX(-Math.PI / 2);
+
+            var material = new THREE.ShadowMaterial();
+            material.opacity = 0.5;
+            ground = new THREE.Mesh(geometry, material);
+            ground.receiveShadow = true;
+            arWorldRoot.add(ground);
+           
+	//////////////////////////////////////////////////////////////////////////////////
 	//		JSON loader
 	//////////////////////////////////////////////////////////////////////////////////
             
-           
+
             function loadModel(){
                 screenMode = screen.orientation.type;
                 if(screenMode.startsWith('landscape')){
@@ -229,7 +250,6 @@
                 }
 
                 loader.load("./data/" + modelName, function (geometry, materials) {
-
                     materials.forEach(function (material) {
                       material.skinning = true;
                     });
@@ -244,10 +264,12 @@
                     action.enabled = true;
                     character.scale.set( 0.5, 0.5, 0.5 );
                     character.name = "apdLogo";
+                    
+                    character.castShadow = true;    //shadow setting
+                    
                     arWorldRoot.add(character);
 
                     animate();
-
                     action.play();
 
                 });                
@@ -313,6 +335,21 @@
             function render () {
               renderer.render(scene, camera);
             }
+            
+//            function getDevices(){
+//                navigator.mediaDevices.enumerateDevices()
+//                .then(devices => {
+//                    var videoDevices = [0,0];
+//                    var videoDeviceIndex = 0;
+//                    devices.forEach(function(device) {
+//                        console.log(device.kind + ": " + device.label +
+//                        " id = " + device.deviceId);
+//                        if (device.kind == "videoinput") {  
+//                            videoDevices[videoDeviceIndex++] =  device.deviceId;    
+//                        }
+//                    });
+//                });
+//          }
 
         </script>
     </body>
