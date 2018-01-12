@@ -1,4 +1,4 @@
-##Web based AR Test with AR.js
+## Web based AR Test with AR.js
 by Yuske Goto / at apd Malaysia
 @ yg@yuskegoto.de
 
@@ -8,7 +8,7 @@ https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html
 This demo can be tested <a href="https://apd.yuskegoto.de/ar/index.html">here.</a>
 Tracking marker is <a href="http://apd.yuskegoto.de/ar/data/ar/apd_tracker.svg">here.</a>
 
-#Source:
+# Source:
 AR.js: JavaScript based AR framework, works on AR marker
 https://github.com/jeromeetienne/AR.js/blob/master/README.md
 
