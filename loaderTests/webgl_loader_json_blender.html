@@ -34,14 +34,14 @@
 		</div>
 
 		<script src="../build/three.js"></script>
-		<script src="js/loaders/collada/Animation.js"></script>
-		<script src="js/loaders/collada/AnimationHandler.js"></script>
-		<script src="js/loaders/collada/KeyFrameAnimation.js"></script>
+		<script src="../js/loaders/collada/Animation.js"></script>
+		<script src="../js/loaders/collada/AnimationHandler.js"></script>
+		<script src="../js/loaders/collada/KeyFrameAnimation.js"></script>
 
-		<script src="js/loaders/ColladaLoader.js"></script>
+		<script src="../js/loaders/ColladaLoader.js"></script>
 
-		<script src="js/Detector.js"></script>
-		<script src="js/libs/stats.min.js"></script>
+		<script src="../js/Detector.js"></script>
+		<script src="../js/libs/stats.min.js"></script>
 
 		<script>
 
@@ -60,7 +60,7 @@
 
 			var loader = new THREE.ColladaLoader();
 			loader.options.convertUpAxis = true;
-			loader.load( 'models/collada/monster/monster.dae', function ( collada ) {
+			loader.load( '../models/collada/monster/monster.dae', function ( collada ) {
 
 				dae = collada.scene;
 
@@ -100,7 +100,7 @@
 				mixer = new THREE.AnimationMixer( scene );
 
 				var loader = new THREE.JSONLoader();
-				loader.load( 'models/animated/monster/monster.js', function ( geometry, materials ) {
+				loader.load( '../models/animated/monster/monster.js', function ( geometry, materials ) {
 
 					// adjust color a bit
 
